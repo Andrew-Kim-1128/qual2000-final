@@ -72,7 +72,7 @@ export default async function globalSetup() {
             category: "testing",
             image: "https://www.english-efl.com/wp-content/uploads/2019/12/test.jpg",
             description: "Playwright test event description.",
-            availableSlots: 100,
+            availableSlots: 8,
         };
 
         const fullEvent = {

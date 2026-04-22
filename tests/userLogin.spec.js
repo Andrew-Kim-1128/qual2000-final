@@ -40,13 +40,13 @@ test.describe("logout / public access", () => {
 });
 
 test.describe("logout / protected route access", () => {
-    test("AUTH-002: logged-out user opening /events/registrations is redirected to login", async ({ page }) => {
+    test("auth-002: logged-out user opening /events/registrations is redirected to login", async ({ page }) => {
         await page.goto("/events/registrations");
         await expect(page).toHaveURL(/\/login\?message=/);
         await expect(page.getByText(/please log in to continue/i)).toBeVisible();
     });
 
-    test("AUTH-003: logged-out user opening /events/registrations/calendar is redirected to login", async ({
+    test("auth-003: logged-out user opening /events/registrations/calendar is redirected to login", async ({
         page,
     }) => {
         await page.goto("/events/registrations/calendar");
@@ -54,7 +54,7 @@ test.describe("logout / protected route access", () => {
         await expect(page.getByText(/please log in to continue/i)).toBeVisible();
     });
 
-    test("AUTH-004: logged-out user opening an event registration form is redirected to login", async ({ page }) => {
+    test("auth-004: logged-out user opening an event registration form is redirected to login", async ({ page }) => {
         await page.goto("/events");
         const firstEventLink = page.locator("a.event-card-link").first();
         if ((await firstEventLink.count()) === 0) {
