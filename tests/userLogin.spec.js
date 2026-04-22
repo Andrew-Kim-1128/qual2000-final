@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 
 test.describe("login-pos: valid user login", () => {
-    test("test", async ({ page }) => {
+    test("existing user can login successfully", async ({ page }) => {
         await page.goto("http://localhost:3000/");
         await page.getByRole("link", { name: "Log In", exact: true }).click();
         await page.getByRole("textbox", { name: "Email Address" }).click();
