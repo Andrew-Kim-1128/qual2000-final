@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 
 test.describe("valid user registration", () => {
-    test("valid-user-registration", async ({ page }) => {
+    test("reg-pos: valid-user-registration", async ({ page }) => {
         const email = `jason_${Date.now()}@email.com`;
 
         await page.goto("http://localhost:3000/");
@@ -18,7 +18,7 @@ test.describe("valid user registration", () => {
 });
 
 test.describe("invalid user registration", () => {
-    test("blank user", async ({ page }) => {
+    test("reg-neg: blank user", async ({ page }) => {
         await page.goto("http://localhost:3000/");
         await page.getByRole("link", { name: "Register" }).click();
         await expect(page.getByRole("textbox", { name: "Full Name" })).toBeEmpty();
@@ -28,7 +28,7 @@ test.describe("invalid user registration", () => {
         await expect(page.getByRole("heading", { name: "Register before you start" })).toBeVisible();
     });
 
-    test("incomplete user", async ({ page }) => {
+    test("reg-neg: incomplete user", async ({ page }) => {
         await page.goto("http://localhost:3000/");
         await page.getByRole("link", { name: "Register" }).click();
         await page.getByRole("textbox", { name: "Email Address" }).click();
@@ -38,7 +38,7 @@ test.describe("invalid user registration", () => {
     });
 });
 
-test.describe("prevent logged-in registration", () => {
+test.describe("reg-neg-007: prevent logged-in registration", () => {
     test.use({ storageState: "playwright/.auth/user.json" });
 
     test("logged in user is redirected away from register page", async ({ page }) => {

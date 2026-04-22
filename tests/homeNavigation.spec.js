@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 
-test.describe("environment setup", () => {
+test.describe("env-003: environment setup", () => {
     test("go to invalid route", async ({ page }) => {
         await page.goto("http://localhost:3000/");
         await page.goto("/does-not-exist");
@@ -10,7 +10,7 @@ test.describe("environment setup", () => {
     });
 });
 
-test.describe("home page navigation - logged out", () => {
+test.describe("home-002: home page navigation - logged out", () => {
     test("navigation shows all logged-out options", async ({ page }) => {
         await page.goto("http://localhost:3000/");
         await expect(page.getByRole("link", { name: "Home" })).toBeVisible();
@@ -21,7 +21,7 @@ test.describe("home page navigation - logged out", () => {
         await expect(page.getByRole("link", { name: "Admin Dashboard" })).toBeVisible();
     });
 
-    test("browse events btn navigates to events page, home link returns home", async ({ page }) => {
+    test("home-004: browse events btn navigates to events page, home link returns home", async ({ page }) => {
         await page.goto("http://localhost:3000/");
         await expect(page.getByRole("link", { name: "Browse Events" })).toBeVisible();
         await page.getByRole("link", { name: "Browse Events" }).click();
@@ -32,7 +32,7 @@ test.describe("home page navigation - logged out", () => {
     });
 });
 
-test.describe("home page navigation - logged in", () => {
+test.describe("home-003: home page navigation - logged in", () => {
     test.use({ storageState: "playwright/.auth/user.json" });
 
     test("navigation shows all logged-in options", async ({ page }) => {
