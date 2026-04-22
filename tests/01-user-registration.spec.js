@@ -110,4 +110,21 @@ test.describe("Invalid user registration", () => {
         expect(response.status()).toBe(400);
         expect(body).toMatch(/please complete every account field/i);
     });
+
+    test("REG-NEG-009 - special characters in the email field should be rejected", async ({ page }) => {
+        const specialCharacterEmail = `A@nD#r!w_${Date.now()}@em@il.com`;
+        await goto(page, "/register");
+        await page.getByLabel(/full name/i).fill("Andrew");
+        await page.getByLabel(/email address/i).fill(specialCharacterEmail);
+        await page.locator("#password").fill("1234");
+
+        // Bypass native browser validation so the app's actual server behavior is exercised.
+        await page.locator('form[action="/register"]').evaluate((form) => {
+            form.setAttribute("novalidate", "true");
+            form.submit();
+        });
+
+        await expect(page).toHaveURL(/\/events\/registrations\?message=/);
+        await expect(page.getByText(/your account has been created successfully/i)).toBeVisible();
+    });
 });
