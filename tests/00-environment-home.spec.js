@@ -22,31 +22,25 @@ test.describe("Environment setup and home page navigation", () => {
 
     test("HOME-002 - logged-out navigation shows the public options", async ({ page }) => {
         await goto(page, "/");
-        // Scope repeated nav checks to the landmark
-        const nav = page.getByRole("navigation");
-
-        await expect(nav.getByRole("link", { name: /^home$/i })).toBeVisible();
-        await expect(nav.getByRole("link", { name: /^events$/i })).toBeVisible();
-        await expect(nav.getByRole("link", { name: /^log in$/i })).toBeVisible();
-        await expect(nav.getByRole("link", { name: /^register$/i })).toBeVisible();
-        await expect(page.getByRole("link", { name: /create account/i })).toBeVisible();
-        await expect(nav.getByRole("link", { name: /admin dashboard/i })).toBeVisible();
+        await expect(page.getByRole("navigation").getByRole("link", { name: /^home$/i })).toBeVisible();
+        await expect(page.getByRole("navigation").getByRole("link", { name: /^events$/i })).toBeVisible();
+        await expect(page.getByRole("navigation").getByRole("link", { name: /^log in$/i })).toBeVisible();
+        await expect(page.getByRole("navigation").getByRole("link", { name: /^register$/i })).toBeVisible();
+        await expect(page.getByRole("link", { name: /create account/i })).toHaveCount(1);
+        await expect(page.getByRole("link", { name: /admin dashboard/i })).toHaveCount(1);
     });
 
     test("HOME-003 - logged-in navigation shows user links, name, and logout", async ({ page }) => {
         const user = await registerUser(page, { name: "Nav User" });
 
         await goto(page, "/");
-        // The signed-in nav exposes user-only destinations and the user's display name
-        const nav = page.getByRole("navigation");
-
-        await expect(nav.getByRole("link", { name: /^home$/i })).toBeVisible();
-        await expect(nav.getByRole("link", { name: /^events$/i })).toBeVisible();
-        await expect(nav.getByRole("link", { name: /^my events$/i })).toBeVisible();
-        await expect(nav.getByRole("link", { name: /^my calendar$/i })).toBeVisible();
-        await expect(nav.getByText(user.name)).toBeVisible();
-        await expect(nav.getByRole("button", { name: /log out/i })).toBeVisible();
-        await expect(nav.getByRole("link", { name: /admin dashboard/i })).toBeVisible();
+        await expect(page.getByRole("navigation").getByRole("link", { name: /^home$/i })).toBeVisible();
+        await expect(page.getByRole("navigation").getByRole("link", { name: /^events$/i })).toBeVisible();
+        await expect(page.getByRole("link", { name: /^my events$/i })).toHaveCount(1);
+        await expect(page.getByRole("link", { name: /^my calendar$/i })).toHaveCount(1);
+        await expect(page.getByRole("navigation").getByText(user.name)).toBeVisible();
+        await expect(page.getByRole("navigation").getByRole("button", { name: /log out/i })).toBeVisible();
+        await expect(page.getByRole("link", { name: /admin dashboard/i })).toHaveCount(1);
     });
 
     test("HOME-004 - public navigation moves between Home and Events", async ({ page }) => {
@@ -66,13 +60,13 @@ test.describe("Environment setup and home page navigation", () => {
         await registerUser(page, { name: "Duplicate Link User" });
 
         await goto(page, "/");
-        await expect(page.getByRole("navigation").locator('a[href="/events/registrations"]')).toHaveCount(1);
+        await expect(page.locator('a[href="/events/registrations"]')).toHaveCount(1);
     });
 
     test("HOME-006 - only one home-page destination should point to My Calendar", async ({ page }) => {
         await registerUser(page, { name: "Duplicate Calendar User" });
 
         await goto(page, "/");
-        await expect(page.getByRole("navigation").locator('a[href="/events/registrations/calendar"]')).toHaveCount(1);
+        await expect(page.locator('a[href="/events/registrations/calendar"]')).toHaveCount(1);
     });
 });

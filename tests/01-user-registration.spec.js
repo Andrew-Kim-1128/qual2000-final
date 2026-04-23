@@ -124,7 +124,7 @@ test.describe("Invalid user registration", () => {
             form.submit();
         });
 
-        await expect(page).toHaveURL(/\/events\/registrations\?message=/);
-        await expect(page.getByText(/your account has been created successfully/i)).toBeVisible();
+        await expect(page).toHaveURL(/\/register$/);
+        await expect(page.getByText(/please enter a valid name, email, and password/i)).toBeVisible();
     });
 });
